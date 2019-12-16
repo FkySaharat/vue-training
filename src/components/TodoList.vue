@@ -199,7 +199,6 @@ div {
   margin: auto 0;
   font-size: 30px;
   color: #cc9a9a;
-  margin-bottom: 4px;
   transition: color 0.2s ease-out;
 }
 
@@ -333,6 +332,6 @@ header {
 }
 
 .view{
-  display: flex;
+  display: flex
 }
 </style>
