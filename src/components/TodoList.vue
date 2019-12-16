@@ -9,17 +9,20 @@
         v-model="newTodo" @keyup.enter="addTodo">
       </header>
       <section class="main" v-show="todos.length" v-cloak>
-        <h5><font color="#fffff;"> Check All </font><input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone"></h5>
+        <h5>
+          <font color="#fffff;"> Check All </font>
+          <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
+        </h5>
           <label for="toggle-all"></label>
           <ul class="todo-list">
             <li v-for="todo in filteredTodos" class="todo" :key="todo.id"
             :class="{ completed: todo.completed, editing: todo == editedTodo }">
-              <div class="view">
-                <input class="toggle" type="checkbox" v-model="todo.completed">
-                <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
+              <div class="view" v-show="todo.id!=editedTodo.id" @dblclick="editTodo(todo)">
+                <input class="toggle" type="checkbox" v-model="todo.completed ">
+                <label >{{ todo.title }}</label>
                 <button class="destroy" @click="removeTodo(todo)"></button>
               </div>
-              <input class="edit" type="text" v-model="todo.title" v-todo-focus="todo == editedTodo"
+              <input v-show="todo.id===editedTodo.id" class="edit" type="text" v-model="todo.title" v-todo-focus="todo == editedTodo"
                 @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)">
             </li>
           </ul>
@@ -73,7 +76,7 @@ export default {
     return {
       todos: todoStorage.fetch(),
       newTodo: '',
-      editedTodo: null,
+      editedTodo: {},
       visibility: 'all'
     }
   },
@@ -139,7 +142,7 @@ export default {
       if (!this.editedTodo) {
         return
       }
-      this.editedTodo = null
+      this.editedTodo = {}
       todo.title = todo.title.trim()
       if (!todo.title) {
         this.removeTodo(todo)
@@ -147,7 +150,7 @@ export default {
     },
 
     cancelEdit: function (todo) {
-      this.editedTodo = null
+      this.editedTodo = {}
       todo.title = this.beforeEditCache
     },
 
@@ -327,5 +330,9 @@ header {
     -webkit-box-shadow: inset 0 -2px 1px rgb(0, 0, 0);
     box-shadow: inset 0 -2px 1px rgb(0, 0, 0);
     background-color: white;
+}
+
+.view{
+  display: flex;
 }
 </style>
