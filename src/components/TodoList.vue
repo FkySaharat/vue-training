@@ -3,12 +3,10 @@
     <section class="todoapp">
       <header class="header">
         <br/><h1><font color="#f5f5f5;"> Todo List .. </font></h1>
-        <input class="new-todo" 
-        autofocus autocomplete="off" 
-        placeholder="What needs to be done?" 
-        v-model="newTodo" @keyup.enter="addTodo">
+        <TodoInput v-on:addTodo="addFromInput"></TodoInput> 
       </header>
       <section class="main" v-show="todos.length" v-cloak>
+        <CheckALl v-on:addChack="addFromInput"></CheckALl> 
         <h5>
           <font color="#fffff;"> Check All </font>
           <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
@@ -22,7 +20,8 @@
                 <label >{{ todo.title }}</label>
                 <button class="destroy" @click="removeTodo(todo)"></button>
               </div>
-              <input v-show="todo.id===editedTodo.id" class="edit" type="text" v-model="todo.title" v-todo-focus="todo == editedTodo"
+              <input v-show="todo.id===editedTodo.id" class="edit" type="text" 
+                v-model="todo.title" v-todo-focus="todo == editedTodo"
                 @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)">
             </li>
           </ul>
@@ -40,6 +39,8 @@
 </template>
 
 <script>
+
+import TodoInput from './TodoInput.vue'
 var STORAGE_KEY = 'todos-vuejs-2.0'
 var todoStorage = {
   fetch: function () {
@@ -54,6 +55,7 @@ var todoStorage = {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
   }
 }
+
 
 var filters = {
   all: function (todos) {
@@ -72,6 +74,9 @@ var filters = {
 }
 
 export default {
+
+  components: {TodoInput},
+
   data() {
     return {
       todos: todoStorage.fetch(),
@@ -116,8 +121,9 @@ export default {
   },
 
   methods: {
-    addTodo: function () {
-      var value = this.newTodo && this.newTodo.trim()
+    addFromInput: function(todo) {
+      alert(todo);
+       var value = todo && todo.trim()
       if (!value) {
         return
       }
@@ -126,8 +132,8 @@ export default {
         title: value,
         completed: false
       })
-      this.newTodo = ''
     },
+    
 
     removeTodo: function (todo) {
       this.todos.splice(this.todos.indexOf(todo), 1)
