@@ -1,6 +1,7 @@
 <template>
   <div>
-      <h2>Archive</h2>
+      <h2><i class="fas fa-archive"></i>&nbsp;Archive</h2>
+      
   </div>
 </template>
 
